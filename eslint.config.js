@@ -30,17 +30,5 @@ export default ts.config(
 				parser: ts.parser
 			}
 		}
-	},
-	{
-		files: ["**/components/ui/**/*.svelte"],
-		rules: {
-			"@typescript-eslint/no-unused-vars": [
-				"warn",
-				{
-					argsIgnorePattern: "^_",
-					varsIgnorePattern: "^$$(Props|Events|Slots|Generic)$",
-				},
-			],
-		},
-	},
+	}
 );
