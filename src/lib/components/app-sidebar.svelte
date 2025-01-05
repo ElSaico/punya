@@ -1,5 +1,4 @@
 <script lang="ts">
-	import * as Sidebar from '$lib/components/ui/sidebar/index.js';
 	import {
 		BadgeCent,
 		BadgeDollarSign,
@@ -81,38 +80,35 @@
 	];
 </script>
 
-<Sidebar.Root>
-	<Sidebar.Header>
+<div data-sidebar="root">
+	<div data-sidebar="header">
 		<p class="text-2xl font-semibold tracking-tight">
 			<a href="/">Punya</a>
 		</p>
-	</Sidebar.Header>
-	<Sidebar.Content>
+	</div>
+	<div data-sidebar="content">
 		{#each menu as group (group.label)}
-			<Sidebar.Group>
-				<Sidebar.GroupLabel>{group.label}</Sidebar.GroupLabel>
-				<Sidebar.GroupContent>
-					<Sidebar.Menu>
+			<div data-sidebar="group">
+				<div data-sidebar="group-label">{group.label}</div>
+				<div data-sidebar="group-content">
+					<ul data-sidebar="menu">
 						{#each group.content as item (item.label)}
-							<Sidebar.MenuItem>
-								<Sidebar.MenuButton>
-									{#snippet child({ props })}
-										<a href={item.link} {...props}>
-											{#if item.iconLab}
-												<Icon iconNode={item.iconLab} />
-											{:else if item.icon}
-												<item.icon />
-											{/if}
-											<span>{item.label}</span>
-										</a>
-									{/snippet}
-								</Sidebar.MenuButton>
-							</Sidebar.MenuItem>
+							<!-- shadcn applies the following classes, but do we even need them? -->
+							<li data-sidebar="menu-item" class="group/menu-item">
+								<a href={item.link} data-sidebar="menu-button" class="peer/menu-button">
+									{#if item.iconLab}
+										<Icon iconNode={item.iconLab} />
+									{:else if item.icon}
+										<item.icon />
+									{/if}
+									<span>{item.label}</span>
+								</a>
+							</li>
 						{/each}
-					</Sidebar.Menu>
-				</Sidebar.GroupContent>
-			</Sidebar.Group>
+					</ul>
+				</div>
+			</div>
 		{/each}
-	</Sidebar.Content>
-	<Sidebar.Footer />
-</Sidebar.Root>
+	</div>
+	<div data-sidebar="footer"></div>
+</div>
