@@ -53,7 +53,22 @@
 				{#snippet activeChild()}<Sun size="14" />{/snippet}
 			</Switch>
 		{/snippet}
-		<!-- select power -->
+		<select class="select mx-auto w-64">
+			<!-- TODO store your choice -->
+			<option value="">Select your power...</option>
+			<option>A. Lavigny-Duval</option>
+			<option>Aisling Duval</option>
+			<option>Archon Delaine</option>
+			<option>Denton Patreus</option>
+			<option>Edmund Mahon</option>
+			<option>Felicia Winters</option>
+			<option>Jerome Archer</option>
+			<option>Li Yong-Rui</option>
+			<option>Nakato Kaine</option>
+			<option>Pranav Antal</option>
+			<option>Yuri Grom</option>
+			<option>Zemina Torval</option>
+		</select>
 	</AppBar>
 	<div class="grid grid-cols-1 md:grid-cols-[auto_1fr]">
 		<Navigation.Rail expanded value={path}>
