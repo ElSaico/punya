@@ -22,9 +22,11 @@
 		Trash2
 	} from 'lucide-svelte';
 	import { chest, toolbox } from '@lucide/lab';
+	import { page } from '$app/state';
 
 	const { children } = $props();
 	let mode = $state(false);
+	let path = $derived(page.url.pathname);
 
 	function handleModeChange() {
 		document.documentElement.classList.toggle('dark', !mode);
@@ -36,7 +38,7 @@
 </script>
 
 <div class="grid h-screen grid-rows-[auto_1fr_auto]">
-	<AppBar>
+	<AppBar border="border-b-[1px] border-surface-200-800">
 		{#snippet lead()}
 			<span class="text-2xl font-semibold tracking-tight">Punya</span>
 		{/snippet}
@@ -54,82 +56,85 @@
 		<!-- select power -->
 	</AppBar>
 	<div class="grid grid-cols-1 md:grid-cols-[auto_1fr]">
-		<Navigation.Rail expanded>
+		<Navigation.Rail expanded value={path}>
 			{#snippet header()}{/snippet}
 			{#snippet tiles()}
-				<Navigation.Tile labelExpanded="Bounty hunting" href="/bounties">
+				<Navigation.Tile labelExpanded="Bounty hunting" href="/bounties" id="/bounties">
 					<!-- Undermining origins must be Delaine -->
 					<Siren />
 				</Navigation.Tile>
-				<Navigation.Tile labelExpanded="Crimes" href="/crimes">
+				<Navigation.Tile labelExpanded="Crimes" href="/crimes" id="/crimes">
 					<!-- Undermining origins only -->
 					<Columns4 />
 				</Navigation.Tile>
-				<Navigation.Tile labelExpanded="Escape pods" href="/pods">
+				<Navigation.Tile labelExpanded="Escape pods" href="/pods" id="/pods">
 					<!-- target station needs power contact (unavailable on Anarchy) -->
 					<Refrigerator />
 				</Navigation.Tile>
-				<Navigation.Tile labelExpanded="Salvage" href="/salvage">
+				<Navigation.Tile labelExpanded="Salvage" href="/salvage" id="/salvage">
 					<!-- target station needs power contact (unavailable on Anarchy)
 							 no Acquisition (or Anarchy, obviously) origins -->
 					<Trash2 />
 				</Navigation.Tile>
-				<Navigation.Tile labelExpanded="Power kills" href="/power-kills">
+				<Navigation.Tile labelExpanded="Power kills" href="/power-kills" id="/power-kills">
 					<!-- Anarchy filter is useful -->
 					<Crosshair />
 				</Navigation.Tile>
-				<Navigation.Tile labelExpanded="Megaships" href="/megaships">
+				<Navigation.Tile labelExpanded="Megaships" href="/megaships" id="/megaships">
 					<!-- non-dockable types only
 							 does Spansh even list them? -->
 					<Rocket />
 				</Navigation.Tile>
 
-				<Navigation.Tile labelExpanded="Restore/Reactivate missions" href="/restore">
+				<Navigation.Tile labelExpanded="Restore/Reactivate" href="/restore" id="/restore">
 					<!-- no Undermining origins -->
 					<Icon iconNode={toolbox} />
 				</Navigation.Tile>
-				<Navigation.Tile labelExpanded="Support missions" href="/support">
+				<Navigation.Tile labelExpanded="Support missions" href="/support" id="/support">
 					<!-- Acquisition origins must be under conflict -->
 					<Gift />
 				</Navigation.Tile>
-				<Navigation.Tile labelExpanded="Holoscreen hacking" href="/holoscreen">
+				<Navigation.Tile labelExpanded="Holoscreen hacking" href="/holoscreen" id="/holoscreen">
 					<Cast />
 				</Navigation.Tile>
-				<Navigation.Tile labelExpanded="Power commodities" href="/power-commodities">
+				<Navigation.Tile
+					labelExpanded="Power commodities"
+					href="/power-commodities"
+					id="/power-commodities"
+				>
 					<!-- Reinforcement target must be on a different system -->
 					<Package />
 				</Navigation.Tile>
-				<Navigation.Tile labelExpanded="Market flood" href="/market-flood">
+				<Navigation.Tile labelExpanded="Market flood" href="/market-flood" id="/market-flood">
 					<!-- Acquisition conflict or Undermining targets only -->
 					<BadgeCent />
 				</Navigation.Tile>
-				<Navigation.Tile labelExpanded="High-profit sales" href="/high-profit">
+				<Navigation.Tile labelExpanded="High-profit sales" href="/high-profit" id="/high-profit">
 					<!-- no Undermining targets
 							 Acquisition targets have (unknown?) location requirement -->
 					<BadgeDollarSign />
 				</Navigation.Tile>
-				<Navigation.Tile labelExpanded="Mining" href="/mining">
+				<Navigation.Tile labelExpanded="Mining" href="/mining" id="/mining">
 					<!-- targets have (unknown?) location requirement -->
 					<Gem />
 				</Navigation.Tile>
-				<Navigation.Tile labelExpanded="Rare goods" href="/rares">
+				<Navigation.Tile labelExpanded="Rare goods" href="/rares" id="/rares">
 					<!-- no Undermining targets
 							 must be legal on target -->
 					<ShoppingBasket />
 				</Navigation.Tile>
 
-				<Navigation.Tile labelExpanded="Power goods" href="/power-goods">
-					<!-- no Reinforcement origins -->
+				<Navigation.Tile labelExpanded="Power goods" href="/power-goods" id="/power-goods">
 					<Icon iconNode={chest} />
 				</Navigation.Tile>
-				<Navigation.Tile labelExpanded="Power data" href="/power-data">
+				<Navigation.Tile labelExpanded="Power data" href="/power-data" id="/power-data">
 					<!-- Odyssey settlements only
 							 Reinforcement targets don't accept Research or Industrial
 							 settlement economy influences type availability
 							 Anarchy filter is useful -->
 					<HardDriveDownload />
 				</Navigation.Tile>
-				<Navigation.Tile labelExpanded="Power malware" href="/power-malware">
+				<Navigation.Tile labelExpanded="Power malware" href="/power-malware" id="/power-malware">
 					<!-- Odyssey settlements only
 							 no Reinforcement origins -->
 					<HardDriveUpload />
