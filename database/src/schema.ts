@@ -18,6 +18,7 @@ export const megaships = sqliteTable('megaships', {
 	category: text(),
 	shipClass: text(),
 	codename: text(),
+	timestamp: integer({ mode: 'timestamp_ms' }).notNull(),
 	systemId: integer().notNull()
 });
 

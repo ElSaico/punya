@@ -1,16 +1,17 @@
 CREATE TABLE `megaship_routes` (
 	`name` text NOT NULL,
 	`timestamp` integer NOT NULL,
-	`systemId` integer NOT NULL,
+	`system_id` integer NOT NULL,
 	PRIMARY KEY(`name`, `timestamp`)
 );
 --> statement-breakpoint
 CREATE TABLE `megaships` (
 	`name` text PRIMARY KEY NOT NULL,
 	`category` text,
-	`shipClass` text,
+	`ship_class` text,
 	`codename` text,
-	`systemId` integer NOT NULL
+	`timestamp` integer NOT NULL,
+	`system_id` integer NOT NULL
 );
 --> statement-breakpoint
 CREATE TABLE `systems` (

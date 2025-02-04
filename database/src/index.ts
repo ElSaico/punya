@@ -57,7 +57,7 @@ const SystemCreate = z.object({
 });
 
 const MegashipInput = z.object({
-	timestamp: z.date(),
+	timestamp: z.coerce.date(),
 	systemId: z.number().int().positive(),
 	megaships: z.string().array()
 });
@@ -74,7 +74,14 @@ const MegashipCreate = MegashipInput.transform((input) =>
 			[_, shipClass, category, codename] = name.match(RE_SHIP_OLD)!;
 			category = MEGASHIP_CATEGORY_REMAP.get(category.trim());
 		}
-		return { name, category, shipClass, codename, systemId: input.systemId };
+		return {
+			name,
+			category,
+			shipClass,
+			codename,
+			timestamp: input.timestamp,
+			systemId: input.systemId
+		};
 	})
 );
 
@@ -94,11 +101,15 @@ app.post('/', async (c) => {
 
 app.post('/systems', async (c) => {
 	const db = drizzle(c.env.DB, { casing: 'snake_case' });
+	const body = SystemCreate.safeParse(await c.req.json());
+	if (!body.success) {
+		return Response.json(body.error.errors, { status: 400 });
+	}
+
 	// TODO bulk stuff
-	const data = SystemCreate.parse(await c.req.json());
 	await db
 		.insert(systems)
-		.values(data)
+		.values(body.data)
 		.onConflictDoUpdate({
 			target: systems.id64,
 			set: { power: sql`excluded.power` },
@@ -109,24 +120,30 @@ app.post('/systems', async (c) => {
 
 app.post('/megaships', async (c) => {
 	const db = drizzle(c.env.DB, { casing: 'snake_case' });
+	const body = MegashipInput.safeParse(await c.req.json());
+	if (!body.success) {
+		return Response.json(body.error.errors, { status: 400 });
+	}
+
 	// TODO bulk stuff
-	const data = MegashipInput.parse(await c.req.json());
 	const moved = await db
 		.insert(megaships)
-		.values(MegashipCreate.parse(data))
+		.values(MegashipCreate.parse(body.data))
 		.onConflictDoUpdate({
 			target: megaships.name,
-			set: { systemId: sql`excluded.systemId` },
-			setWhere: sql`systemId <> excluded.systemId`
+			set: { systemId: sql`excluded.system_id` },
+			setWhere: sql`system_id <> excluded.system_id AND timestamp > excluded.timestamp`
 		})
 		.returning({ name: megaships.name });
-	await db.insert(megashipRoutes).values(
-		moved.map((entry) => ({
-			name: entry.name,
-			systemId: data.systemId,
-			timestamp: data.timestamp
-		}))
-	);
+	if (moved.length > 0) {
+		await db.insert(megashipRoutes).values(
+			moved.map((entry) => ({
+				name: entry.name,
+				systemId: body.data.systemId,
+				timestamp: body.data.timestamp
+			}))
+		);
+	}
 	return Response.json('OK');
 });
 
