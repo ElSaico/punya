@@ -1,0 +1,25 @@
+{
+  "name": "punya-database",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "deploy": "wrangler deploy",
+    "dev": "wrangler dev",
+    "start": "wrangler dev",
+    "cf-typegen": "wrangler types",
+    "generate": "drizzle-kit generate",
+    "migrate": "wrangler d1 migrations apply punya --remote",
+    "migrate:local": "wrangler d1 migrations apply punya --local"
+  },
+  "dependencies": {
+    "drizzle-orm": "^0.39.1",
+    "hono": "^4.6.20",
+    "zod": "^3.24.1"
+  },
+  "devDependencies": {
+    "@cloudflare/workers-types": "4.20250129.0",
+    "drizzle-kit": "^0.30.4",
+    "typescript": "^5.5.2",
+    "wrangler": "^3.107.3"
+  }
+}
