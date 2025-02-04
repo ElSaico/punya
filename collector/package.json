@@ -1,0 +1,17 @@
+{
+	"name": "punya-collector",
+	"version": "0.0.1",
+	"type": "module",
+	"main": "src/app.ts",
+	"private": true,
+	"scripts": {
+		"dev": "tsx watch src/app.ts"
+	},
+	"dependencies": {
+		"dotenv": "16.4.7",
+		"zeromq": "6.3.0"
+	},
+	"devDependencies": {
+		"tsx": "4.19.2"
+	}
+}
