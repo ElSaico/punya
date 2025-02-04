@@ -1,0 +1,13 @@
+{
+	"apps": [
+		{
+			"name": "punya-collector",
+			"script": "./src/app.ts",
+			"instances": 0,
+			"exec_mode": "cluster",
+			"time": true,
+			"interpreter": "node",
+			"interpreter_args": "--import tsx"
+		}
+	]
+}

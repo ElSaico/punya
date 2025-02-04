@@ -2,13 +2,14 @@
 	"name": "punya-collector",
 	"version": "0.0.1",
 	"type": "module",
-	"main": "src/app.ts",
 	"private": true,
 	"scripts": {
+		"start": "pm2 start ecosystem.json",
 		"dev": "tsx watch src/app.ts"
 	},
 	"dependencies": {
 		"dotenv": "16.4.7",
+		"pm2": "5.4.3",
 		"zeromq": "6.3.0"
 	},
 	"devDependencies": {
