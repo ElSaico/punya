@@ -4,6 +4,7 @@ import { Hono } from 'hono';
 import { bearerAuth } from 'hono/bearer-auth';
 import { createMiddleware } from 'hono/factory';
 import { logger } from 'hono/logger';
+import { zValidator } from '@hono/zod-validator';
 import { z } from 'zod';
 
 import { megashipRoutes, megaships, systems } from './schema';
@@ -101,17 +102,14 @@ app.get('/', async (c) => {
 	return Response.json(entries);
 });
 
-app.post('/systems', apiKey, async (c) => {
+app.post('/systems', apiKey, zValidator('json', SystemCreate), async (c) => {
 	const db = drizzle(c.env.DB, { casing: 'snake_case' });
-	const body = SystemCreate.safeParse(await c.req.json());
-	if (!body.success) {
-		return Response.json(body.error.errors, { status: 400 });
-	}
+	const data = c.req.valid('json');
 
 	// TODO bulk stuff
 	await db
 		.insert(systems)
-		.values(body.data)
+		.values(data)
 		.onConflictDoUpdate({
 			target: systems.id64,
 			set: { power: sql`excluded.power` },
@@ -120,17 +118,14 @@ app.post('/systems', apiKey, async (c) => {
 	return Response.json('OK');
 });
 
-app.post('/megaships', apiKey, async (c) => {
+app.post('/megaships', apiKey, zValidator('json', MegashipInput), async (c) => {
 	const db = drizzle(c.env.DB, { casing: 'snake_case' });
-	const body = MegashipInput.safeParse(await c.req.json());
-	if (!body.success) {
-		return Response.json(body.error.errors, { status: 400 });
-	}
+	const data = c.req.valid('json');
 
 	// TODO bulk stuff
 	const moved = await db
 		.insert(megaships)
-		.values(MegashipCreate.parse(body.data))
+		.values(MegashipCreate.parse(data))
 		.onConflictDoUpdate({
 			target: megaships.name,
 			set: { systemId: sql`excluded.system_id` },
@@ -141,8 +136,8 @@ app.post('/megaships', apiKey, async (c) => {
 		await db.insert(megashipRoutes).values(
 			moved.map((entry) => ({
 				name: entry.name,
-				systemId: body.data.systemId,
-				timestamp: body.data.timestamp
+				systemId: data.systemId,
+				timestamp: data.timestamp
 			}))
 		);
 	}
