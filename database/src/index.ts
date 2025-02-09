@@ -2,6 +2,7 @@ import { sql } from 'drizzle-orm';
 import { drizzle } from 'drizzle-orm/d1';
 import { Hono } from 'hono';
 import { bearerAuth } from 'hono/bearer-auth';
+import { createMiddleware } from 'hono/factory';
 import { logger } from 'hono/logger';
 import { z } from 'zod';
 
@@ -86,20 +87,21 @@ const MegashipCreate = MegashipInput.transform((input) =>
 );
 
 const app = new Hono<{ Bindings: Bindings }>();
-
-app.use('*', logger(), async (c, next) => {
+const apiKey = createMiddleware<{ Bindings: Bindings }>(async (c, next) => {
 	const auth = bearerAuth({ token: c.env.API_KEY });
 	return auth(c, next);
 });
 
-app.post('/', async (c) => {
+app.use('*', logger());
+
+app.get('/', async (c) => {
 	const db = drizzle(c.env.DB, { casing: 'snake_case' });
 	// TODO accept power and reference system as parameters
 	const entries = await db.select().from(megaships);
 	return Response.json(entries);
 });
 
-app.post('/systems', async (c) => {
+app.post('/systems', apiKey, async (c) => {
 	const db = drizzle(c.env.DB, { casing: 'snake_case' });
 	const body = SystemCreate.safeParse(await c.req.json());
 	if (!body.success) {
@@ -118,7 +120,7 @@ app.post('/systems', async (c) => {
 	return Response.json('OK');
 });
 
-app.post('/megaships', async (c) => {
+app.post('/megaships', apiKey, async (c) => {
 	const db = drizzle(c.env.DB, { casing: 'snake_case' });
 	const body = MegashipInput.safeParse(await c.req.json());
 	if (!body.success) {
