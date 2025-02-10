@@ -12,6 +12,5 @@ export function setUrlQuery(name: string, value: string) {
 }
 
 export function toggleUrlQuery(name: string) {
-	const visible = getUrlQuery(name) === '1' ? '' : '1';
-	setUrlQuery(name, visible.toString());
+	setUrlQuery(name, getUrlQuery(name) === '1' ? '' : '1');
 }
