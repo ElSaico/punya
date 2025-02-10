@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { getUrlQuery, isUrlQuery, setUrlQuery, toggleUrlQuery } from '$lib/utils';
+	import { getUrlQuery, setUrlQuery, toggleUrlQuery } from '$lib/utils';
 	import '../app.css';
 
 	const { children } = $props();
@@ -45,7 +45,7 @@
 				<button
 					class={{
 						'btn btn-primary join-item': true,
-						'btn-active': isUrlQuery(app)
+						'btn-active': getUrlQuery(app) === '1'
 					}}
 					onclick={() => toggleUrlQuery(app)}
 				>

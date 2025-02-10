@@ -5,10 +5,6 @@ export function getUrlQuery(name: string) {
 	return page.url.searchParams.get(name);
 }
 
-export function isUrlQuery(name: string) {
-	return getUrlQuery(name) === '1';
-}
-
 export function setUrlQuery(name: string, value: string) {
 	const url = new URL(page.url);
 	url.searchParams.set(name, value);
@@ -16,6 +12,6 @@ export function setUrlQuery(name: string, value: string) {
 }
 
 export function toggleUrlQuery(name: string) {
-	const visible = page.url.searchParams.get(name) === '1' ? '' : '1';
+	const visible = getUrlQuery(name) === '1' ? '' : '1';
 	setUrlQuery(name, visible.toString());
 }

@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { isUrlQuery } from '$lib/utils';
+	import { getUrlQuery } from '$lib/utils';
 
 	import Combat from '$lib/components/combat.svelte';
 	import MarketFlood from '$lib/components/market-flood.svelte';
@@ -10,10 +10,10 @@
 	import Settlements from '$lib/components/settlements.svelte';
 </script>
 
-{#if isUrlQuery('cb')}<Combat />{/if}
-{#if isUrlQuery('mf')}<MarketFlood />{/if}
-{#if isUrlQuery('mg')}<Megaships />{/if}
-{#if isUrlQuery('mn')}<Mining />{/if}
-{#if isUrlQuery('ms')}<Missions />{/if}
-{#if isUrlQuery('sr')}<SearchRescue />{/if}
-{#if isUrlQuery('st')}<Settlements />{/if}
+{#if getUrlQuery('cb') === '1'}<Combat />{/if}
+{#if getUrlQuery('mf') === '1'}<MarketFlood />{/if}
+{#if getUrlQuery('mg') === '1'}<Megaships />{/if}
+{#if getUrlQuery('mn') === '1'}<Mining />{/if}
+{#if getUrlQuery('ms') === '1'}<Missions />{/if}
+{#if getUrlQuery('sr') === '1'}<SearchRescue />{/if}
+{#if getUrlQuery('st') === '1'}<Settlements />{/if}
