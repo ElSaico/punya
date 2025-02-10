@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { page } from '$app/state';
+	import { isUrlQuery } from '$lib/utils';
 
 	import Combat from '$lib/components/combat.svelte';
 	import MarketFlood from '$lib/components/market-flood.svelte';
@@ -8,16 +8,12 @@
 	import Missions from '$lib/components/missions.svelte';
 	import SearchRescue from '$lib/components/search-rescue.svelte';
 	import Settlements from '$lib/components/settlements.svelte';
-
-	function isAppActive(app: string) {
-		return page.url.searchParams.get(app) === 'true';
-	}
 </script>
 
-{#if isAppActive('combat')}<Combat />{/if}
-{#if isAppActive('market-flood')}<MarketFlood />{/if}
-{#if isAppActive('megaships')}<Megaships />{/if}
-{#if isAppActive('mining')}<Mining />{/if}
-{#if isAppActive('missions')}<Missions />{/if}
-{#if isAppActive('search-rescue')}<SearchRescue />{/if}
-{#if isAppActive('settlements')}<Settlements />{/if}
+{#if isUrlQuery('cb')}<Combat />{/if}
+{#if isUrlQuery('mf')}<MarketFlood />{/if}
+{#if isUrlQuery('mg')}<Megaships />{/if}
+{#if isUrlQuery('mn')}<Mining />{/if}
+{#if isUrlQuery('ms')}<Missions />{/if}
+{#if isUrlQuery('sr')}<SearchRescue />{/if}
+{#if isUrlQuery('st')}<Settlements />{/if}
