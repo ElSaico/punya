@@ -30,6 +30,7 @@ const RE_SHIP_OLD = /^([A-Z][a-z]+) Class ([A-Za-z\s]+) ([A-Z]+-\d+)$/;
 // old type -> new type
 const MEGASHIP_CATEGORY_REMAP = new Map<string, string>([
 	['Agricultural Vessel', 'Cropper'],
+	['Cargo Ship', 'Hauler'], // only ALL-4659 according to Inara
 	['Bulk Cargo Ship', 'Hauler'],
 	['Prison Ship', 'Reformatory'],
 	['Science Vessel', 'Researcher'],
