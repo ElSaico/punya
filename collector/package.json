@@ -5,6 +5,8 @@
 	"private": true,
 	"scripts": {
 		"start": "pm2 start ecosystem.json",
+		"restart": "pm2 restart punya-collector",
+		"stop": "pm2 stop punya-collector",
 		"dev": "tsx watch src/app.ts"
 	},
 	"dependencies": {
