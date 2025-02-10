@@ -16,9 +16,9 @@ eddi.connect(EDDI_URL);
 eddi.subscribe('');
 console.log('EDDI listener connected successfully');
 
-async function request(endpoint: string, data: object[]) {
+async function request(resource: string, data: object[]) {
 	const body = JSON.stringify(data);
-	await fetch(`${process.env.DATABASE_API_URL}/${endpoint}`, {
+	await fetch(`${process.env.DATABASE_API_URL}/feed/${resource}`, {
 		method: 'POST',
 		headers: {
 			'Content-Type': 'application/json',

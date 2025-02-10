@@ -1,4 +1,20 @@
+import { z } from '@hono/zod-openapi';
 import { index, integer, primaryKey, real, sqliteTable, text } from 'drizzle-orm/sqlite-core';
+
+export const PowerEnum = z.enum([
+	'A. Lavigny-Duval',
+	'Aisling Duval',
+	'Archon Delaine',
+	'Denton Patreus',
+	'Edmund Mahon',
+	'Felicia Winters',
+	'Jerome Archer',
+	'Li Yong-Rui',
+	'Nakato Kaine',
+	'Pranav Antal',
+	'Yuri Grom',
+	'Zemina Torval'
+]);
 
 export const systems = sqliteTable(
 	'systems',
@@ -8,7 +24,7 @@ export const systems = sqliteTable(
 		x: real().notNull(),
 		y: real().notNull(),
 		z: real().notNull(),
-		power: text()
+		power: text({ enum: PowerEnum.options })
 	},
 	(table) => [index('power_idx').on(table.power)]
 );
