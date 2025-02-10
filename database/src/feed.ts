@@ -147,10 +147,9 @@ feedApp.post('/megaships', zValidator('json', MegashipInput), async (c) => {
 	const chunksMoved = moved
 		.filter((chunk) => chunk.length > 0)
 		.map((chunk) => db.insert(megashipRoutes).values(chunk));
-	if (!isTuple(chunksMoved)) {
-		return Response.json('this should be impossible', { status: 500 });
+	if (isTuple(chunksMoved)) {
+		await db.batch(chunksMoved);
 	}
-	await db.batch(chunksMoved);
 
 	return Response.json('OK');
 });
