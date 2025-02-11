@@ -18,7 +18,7 @@ import { megaships, PowerEnum, systems } from './schema';
 const PowerSchema = PowerEnum.openapi('Power');
 const PowerSystemKindSchema = z.enum(['all', 'acq', 'rei', 'und']).openapi('PowerSystemKind');
 
-const MegashipSchema = z
+const MegashipResponseSchema = z
 	.object({
 		name: z.string(),
 		category: z.string(),
@@ -32,68 +32,71 @@ const MegashipSchema = z
 	})
 	.openapi('Megaship');
 
-const MegashipQuerySchema = z.object({
+const MegashipRequestSchema = z.object({
 	power: PowerSchema,
-	systemKind: PowerSystemKindSchema.openapi({ default: 'all' }),
-	systemId: z.number().positive(),
-	page: z.number().positive().openapi({ default: 10 }),
-	offset: z.number().positive().openapi({ default: 0 })
+	systemKind: PowerSystemKindSchema,
+	baseSystemId: z.coerce.number().positive(),
+	page: z.coerce.number().positive().default(10),
+	offset: z.coerce.number().nonnegative().default(0)
 });
 
 const app = new OpenAPIHono<{ Bindings: Env }>();
 
 app.use('*', logger());
 
-const megashipsRoute = createRoute({
-	method: 'get',
-	path: '/megaships',
-	request: {
-		query: MegashipQuerySchema
-	},
-	middleware: [zValidator('json', MegashipQuerySchema)],
-	responses: {
-		200: {
-			description: 'Retrieve a list of megaships',
-			content: {
-				'application/json': {
-					schema: MegashipSchema.array()
+app.openapi(
+	createRoute({
+		method: 'get',
+		path: '/megaships',
+		request: {
+			query: MegashipRequestSchema
+		},
+		middleware: [zValidator('query', MegashipRequestSchema)],
+		responses: {
+			200: {
+				description: 'Retrieve a list of megaships',
+				content: {
+					'application/json': {
+						schema: MegashipResponseSchema.array()
+					}
 				}
 			}
 		}
-	}
-});
+	}),
+	async (c) => {
+		const db = drizzle(c.env.DB, { casing: 'snake_case' });
+		const data = c.req.valid('query');
 
-app.openapi(megashipsRoute, async (c) => {
-	const db = drizzle(c.env.DB, { casing: 'snake_case' });
-	const data = c.req.valid('query');
-
-	// TODO distance from base system
-	const entries = await db
-		.select({
-			name: megaships.name,
-			codename: sql<string>`codename`,
-			shipClass: sql<string>`shipClass`,
-			category: sql<string>`category`,
-			system: {
-				id64: systems.id64,
-				name: systems.name,
-				power: systems.power
-			}
-		})
-		.from(megaships)
-		.innerJoin(systems, eq(megaships.systemId, systems.id64))
-		.where(
-			and(
-				ne(megaships.category, 'Reformatory'),
-				isNotNull(megaships.codename),
-				isNotNull(megaships.shipClass),
-				isNotNull(megaships.category)
+		// TODO distance from base system
+		// TODO filter by power+kind
+		const entries = await db
+			.select({
+				name: megaships.name,
+				// workaround to https://github.com/drizzle-team/drizzle-orm/issues/2956
+				codename: sql<string>`codename`,
+				shipClass: sql<string>`ship_class`,
+				category: sql<string>`category`,
+				system: {
+					id64: systems.id64,
+					name: systems.name,
+					power: systems.power
+				}
+			})
+			.from(megaships)
+			.innerJoin(systems, eq(megaships.systemId, systems.id64))
+			.where(
+				and(
+					ne(megaships.category, 'Reformatory'),
+					isNotNull(megaships.codename),
+					isNotNull(megaships.shipClass),
+					isNotNull(megaships.category)
+				)
 			)
-		)
-		.limit(data.page)
-		.offset(data.offset);
-	return c.json(entries, 200);
-});
+			.limit(data.page)
+			.offset(data.offset);
+		return c.json(entries, 200);
+	}
+);
 
 app.doc31('/docs', { openapi: '3.1.0', info: { title: 'Punya API', version: '1' } });
 
