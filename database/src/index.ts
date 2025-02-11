@@ -1,4 +1,4 @@
-import { and, eq, isNotNull, ne, sql } from 'drizzle-orm';
+import { and, eq, isNotNull, like, ne, sql } from 'drizzle-orm';
 import { drizzle } from 'drizzle-orm/d1';
 import { logger } from 'hono/logger';
 import { createRoute, z, OpenAPIHono } from '@hono/zod-openapi';
@@ -39,6 +39,14 @@ const MegashipRequestSchema = z.object({
 	page: z.coerce.number().positive().default(10),
 	offset: z.coerce.number().nonnegative().default(0)
 });
+
+const AutocompleteResponseSchema = z
+	.object({
+		label: z.string(),
+		value: z.coerce.number()
+	})
+	.array()
+	.openapi('Autocomplete');
 
 const app = new OpenAPIHono<{ Bindings: Env }>();
 
@@ -94,6 +102,40 @@ app.openapi(
 			)
 			.limit(data.page)
 			.offset(data.offset);
+		return c.json(entries, 200);
+	}
+);
+
+app.openapi(
+	createRoute({
+		method: 'get',
+		path: '/autocomplete/systems',
+		request: {
+			query: z.object({
+				name: z.string()
+			})
+		},
+		responses: {
+			200: {
+				description: 'Searches for a system name',
+				content: {
+					'application/json': {
+						schema: AutocompleteResponseSchema
+					}
+				}
+			}
+		}
+	}),
+	async (c) => {
+		const db = drizzle(c.env.DB, { casing: 'snake_case', logger: true });
+		const data = c.req.valid('query');
+
+		const entries = await db
+			.select({ label: systems.name, value: systems.id64 })
+			.from(systems)
+			.where(like(systems.name, `${data.name}%`))
+			.orderBy(systems.name)
+			.limit(10);
 		return c.json(entries, 200);
 	}
 );
