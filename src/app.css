@@ -1,2 +1,4 @@
 @import "tailwindcss";
 @plugin "daisyui";
+
+/* TODO create daisyUI theme based on the EDAssets palette: https://edassets.org/#/colours */

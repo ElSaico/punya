@@ -8,11 +8,12 @@
 		['cb', 'Combat'],
 		['mf', 'Market flood'],
 		['mg', 'Megaships'],
-		['mn', 'Mining'],
 		['ms', 'Missions'],
 		['sr', 'Search and Rescue'],
 		['st', 'Settlements']
 	];
+
+	// TODO take design cues from meritminer.cc and use assets from edassets.org
 </script>
 
 <div class="grid h-screen grid-rows-[auto_1fr_auto]">
@@ -44,7 +45,7 @@
 			{#each apps as [app, label]}
 				<button
 					class={{
-						'btn btn-primary join-item': true,
+						'btn btn-soft btn-primary join-item': true,
 						'btn-active': getUrlQuery(app) === '1'
 					}}
 					onclick={() => toggleUrlQuery(app)}
@@ -54,7 +55,7 @@
 			{/each}
 		</div>
 	</nav>
-	<main class="space-y-4 p-4">
+	<main class="grid grid-cols-2 space-y-4 p-4">
 		{@render children()}
 	</main>
 </div>
