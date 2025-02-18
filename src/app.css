@@ -1,4 +1,60 @@
+@import url('https://fonts.googleapis.com/css2?family=Sintony');
 @import "tailwindcss";
 @plugin "daisyui";
 
-/* TODO create daisyUI theme based on the EDAssets palette: https://edassets.org/#/colours */
+@font-face {
+    font-family: 'Euro Caps';
+    src: url('/fonts/EUROCAPS.TTF') format('truetype');
+}
+
+@plugin "daisyui/theme" {
+    name: "elite";
+    default: true;
+    prefersdark: true;
+
+    --default-font-family: "Sintony";
+    --font-mono: "Euro Caps";
+
+    --color-base-100: rgb(0, 0, 0);
+    --color-base-200: rgba(255, 127, 0, 0.0625);
+    --color-base-300: rgba(255, 127, 0, 0.1875);
+    --color-base-content: rgb(255, 127, 0);
+    --color-primary: rgba(255, 127, 0, 0.8125);
+    --color-primary-content: rgba(0, 0, 0, 0.8125);
+    --color-secondary: rgba(0, 255, 255, 0.0625);
+    --color-secondary-content: rgba(175, 255, 255, 0.8125);
+    --color-accent: rgba(31, 31, 31, 0.8125);
+    --color-accent-content: rgba(255, 255, 255, 0.8125);
+    --color-neutral: rgba(0, 0, 0, 0.1875);
+    --color-neutral-content: rgba(255, 127, 0, 0.8125);
+    --color-info: rgba(0, 255, 255, 0.1875);
+    --color-info-content: rgba(0, 255, 255, 0.8125);
+    --color-success: rgba(0, 255, 0, 0.1875);
+    --color-success-content: rgba(0, 255, 0, 0.8125);
+    --color-warning: rgba(255, 255, 0, 0.1875);
+    --color-warning-content: rgba(255, 255, 0, 0.8125);
+    --color-error: rgba(255, 0, 0, 0.1875);
+    --color-error-content: rgba(255, 0, 0, 0.8125);
+}
+
+@theme {
+    --color-archer: rgba(255, 0, 255, 0.8125);
+    --color-winters: rgba(255, 153, 0, 0.8125);
+    --color-aisling: rgba(0, 191, 255, 0.8125);
+    --color-arissa: rgba(153, 0, 255, 0.8125);
+    --color-patreus: rgba(31, 223, 223, 0.8125);
+    --color-torval: rgba(0, 95, 255, 0.8125);
+    --color-kaine: rgba(153, 255, 0, 0.8125);
+    --color-mahon: rgba(0, 153, 0, 0.8125);
+    --color-antal: rgba(255, 255, 0, 0.8125);
+    --color-delaine: rgba(255, 0, 0, 0.8125);
+    --color-grom: rgba(255, 95, 0, 0.8125);
+    --color-li: rgba(0, 255, 127, 0.8125);
+}
+
+@layer utilities {
+    .menu {
+        --menu-active-bg: var(--color-primary);
+        --menu-active-fg: var(--color-primary-content);
+    }
+}

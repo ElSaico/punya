@@ -6,6 +6,10 @@ declare global {
 		// interface PageState {}
 		// interface Platform {}
 	}
+	type Autocomplete = {
+		label: string;
+		value: number;
+	};
 }
 
 export {};

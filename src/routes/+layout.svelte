@@ -1,61 +1,41 @@
 <script lang="ts">
-	import { getUrlQuery, setUrlQuery, toggleUrlQuery } from '$lib/utils';
+	import { HomeIcon } from 'heroicons-svelte/24/outline';
+	import { page } from '$app/state';
+
 	import '../app.css';
 
 	const { children } = $props();
 
 	const apps = [
-		['cb', 'Combat'],
-		['mf', 'Market flood'],
-		['mg', 'Megaships'],
-		['ms', 'Missions'],
-		['sr', 'Search and Rescue'],
-		['st', 'Settlements']
+		{ href: '/', icon: HomeIcon },
+		{ href: '/combat', title: 'Combat' },
+		{ href: '/market-flood', title: 'Market flood' },
+		{ href: '/megaships', title: 'Megaships' },
+		{ href: '/missions', title: 'Missions' },
+		{ href: '/search-rescue', title: 'Search and Rescue' },
+		{ href: '/settlements', title: 'Settlements' }
 	];
-
-	// TODO take design cues from meritminer.cc and use assets from edassets.org
 </script>
 
-<div class="grid h-screen grid-rows-[auto_1fr_auto]">
-	<nav class="navbar bg-base-300 shadow-sm">
-		<div class="navbar-start">
-			<span class="btn btn-ghost text-xl">Punya</span>
-		</div>
-		<div class="navbar-center">
-			<select
-				class="select"
-				bind:value={() => getUrlQuery('power'), (p) => setUrlQuery('power', p)}
-			>
-				<option disabled selected value={null}>Select your power</option>
-				<option value="A. Lavigny-Duval">Arissa Lavigny-Duval</option>
-				<option>Aisling Duval</option>
-				<option>Archon Delaine</option>
-				<option>Denton Patreus</option>
-				<option>Edmund Mahon</option>
-				<option>Felicia Winters</option>
-				<option>Jerome Archer</option>
-				<option>Li Yong-Rui</option>
-				<option>Nakato Kaine</option>
-				<option>Pranav Antal</option>
-				<option>Yuri Grom</option>
-				<option>Zemina Torval</option>
-			</select>
-		</div>
-		<div class="navbar-end join">
-			{#each apps as [app, label]}
-				<button
+<div class="container mx-auto flex h-screen flex-col pt-4">
+	<ul
+		class="menu menu-horizontal bg-base-300 menu-lg flex w-full border-t border-b-2 px-0 py-0.5 font-mono"
+	>
+		{#each apps as app (app.href)}
+			<li class={{ 'flex-none': app.icon, 'flex-auto': !app.icon }}>
+				<a
+					href={app.href}
 					class={{
-						'btn btn-soft btn-primary join-item': true,
-						'btn-active': getUrlQuery(app) === '1'
+						'w-full place-content-center rounded-none py-0': true,
+						'menu-active': page.route.id === app.href
 					}}
-					onclick={() => toggleUrlQuery(app)}
 				>
-					{label}
-				</button>
-			{/each}
-		</div>
-	</nav>
-	<main class="grid grid-cols-2 space-y-4 p-4">
+					{#if app.icon}<app.icon class="h-7 w-4" />{:else}{app.title}{/if}
+				</a>
+			</li>
+		{/each}
+	</ul>
+	<main class="bg-base-200 border-b-2">
 		{@render children()}
 	</main>
 </div>
