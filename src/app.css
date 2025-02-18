@@ -38,18 +38,19 @@
 }
 
 @theme {
-    --color-archer: rgba(255, 0, 255, 0.8125);
-    --color-winters: rgba(255, 153, 0, 0.8125);
-    --color-aisling: rgba(0, 191, 255, 0.8125);
-    --color-arissa: rgba(153, 0, 255, 0.8125);
-    --color-patreus: rgba(31, 223, 223, 0.8125);
-    --color-torval: rgba(0, 95, 255, 0.8125);
-    --color-kaine: rgba(153, 255, 0, 0.8125);
-    --color-mahon: rgba(0, 153, 0, 0.8125);
-    --color-antal: rgba(255, 255, 0, 0.8125);
-    --color-delaine: rgba(255, 0, 0, 0.8125);
-    --color-grom: rgba(255, 95, 0, 0.8125);
-    --color-li: rgba(0, 255, 127, 0.8125);
+    --inset-shadow-pp: inset 0 -1px 4px 0, inset 0 1px 4px 0;
+    --color-archer: rgb(255, 0, 255);
+    --color-winters: rgb(255, 153, 0);
+    --color-aisling: rgb(0, 191, 255);
+    --color-arissa: rgb(153, 0, 255);
+    --color-patreus: rgb(31, 223, 223);
+    --color-torval: rgb(0, 95, 255);
+    --color-kaine: rgb(153, 255, 0);
+    --color-mahon: rgb(0, 153, 0);
+    --color-antal: rgb(255, 255, 0);
+    --color-delaine: rgb(255, 0, 0);
+    --color-grom: rgb(255, 95, 0);
+    --color-li: rgb(0, 255, 127);
 }
 
 @layer utilities {
