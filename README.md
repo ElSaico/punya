@@ -23,8 +23,9 @@ punya
     - Oracle Spatial!
     - Builtin REST API via ORDS
       - Can it have the distance filters set up?
-    - Only ORMs available are Hibernate *(shudders)* and SQLAlchemy (no spatial support)
+    - Sequelize is the only proper Node ORM (needs custom data class for spatial)
     - No RETURNING on upsert
+      - Apparently Sequelize handles this
   - Oracle HeatWave?
     - Free tier
     - Good old MySQL
@@ -38,7 +39,7 @@ punya
     - Free tier
     - Good old SQL Server
     - Spatial data types
-    - Check out ORM support
+    - Sequelize is the only proper Node ORM (needs custom data class for spatial)
 
 ### EDDN collector
 
