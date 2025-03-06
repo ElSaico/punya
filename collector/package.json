@@ -11,10 +11,12 @@
 	},
 	"dependencies": {
 		"dotenv": "16.4.7",
+		"mssql": "11.0.1",
 		"pm2": "5.4.3",
 		"zeromq": "6.3.0"
 	},
 	"devDependencies": {
+		"@types/mssql": "9.1.7",
 		"tsx": "4.19.2"
 	}
 }

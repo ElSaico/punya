@@ -1,5 +1,23 @@
+export type Power =
+  | 'A. Lavigny-Duval'
+  | 'Aisling Duval'
+  | 'Archon Delaine'
+  | 'Denton Patreus'
+  | 'Edmund Mahon'
+  | 'Felicia Winters'
+  | 'Jerome Archer'
+  | 'Li Yong-Rui'
+  | 'Nakato Kaine'
+  | 'Pranav Antal'
+  | 'Yuri Grom'
+  | 'Zemina Torval';
+
+export type PowerState = 'Exploited' | 'Contested' | 'Fortified' | 'Stronghold';
+
+export type SystemPosition = [number, number, number];
+
 export interface FSSSignalDiscovered extends Message {
-  event: "FSSSignalDiscovered";
+  event: 'FSSSignalDiscovered';
   signals: [
     {
       timestamp: string;
@@ -12,12 +30,12 @@ export interface FSSSignalDiscovered extends Message {
       SpawningPower?: string;
       OpposingPower?: string;
       ThreatLevel?: number;
-    },
+    }
   ];
 }
 
 export interface FSDJump extends Message {
-  event: "FSDJump";
+  event: 'FSDJump';
   Body: string;
   BodyID: number;
   BodyType: string;
@@ -30,10 +48,10 @@ export interface FSDJump extends Message {
   SystemGovernment: string;
   SystemSecurity: string;
   SystemFaction?: { FactionState?: string; Name: string };
-  Conflicts?: any[]; // not relevant to map
-  Factions?: any[]; // not relevant to map
-  ControllingPower?: string;
-  PowerplayState?: string;
+  Conflicts?: never[];
+  Factions?: never[];
+  ControllingPower?: Power;
+  PowerplayState?: PowerState;
   Powers?: string[];
 }
 
@@ -44,7 +62,7 @@ export interface Message {
   timestamp: string;
   SystemAddress: number;
   StarSystem: string;
-  StarPos: [number, number, number];
+  StarPos: SystemPosition;
 }
 
 export interface Journal {
