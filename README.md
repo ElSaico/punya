@@ -56,8 +56,10 @@ punya
   - Cloudflare Workers?
     - Lacks support from MSAL, if we stick with Azure SQL
       - https://github.com/Azure/azure-sdk-for-js/pull/32422
-      - Blocked by https://github.com/cloudflare/workerd/issues/3284
+      - ~~Blocked by https://github.com/cloudflare/workerd/issues/3284~~
   - Azure Functions?
     - A natural integration with their database... presumably
     - Lower free tier (1m/month vs. 100k/day for Cloudflare)
       - Still, FaaS is very cheap
+    - Terrible documentation
+    - Too much friction for simpler use cases like this
