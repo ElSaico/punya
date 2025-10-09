@@ -1,25 +1,19 @@
+# dependencies
 node_modules
 
-# Output
-.output
-.vercel
-.netlify
-.wrangler
-/.svelte-kit
-/build
+# sst
+.sst
 
-# OS
-.DS_Store
-Thumbs.db
+# tmp files
+.#*
 
-# Env
+# env 
+.env*.local
 .env
-.env.*
-!.env.example
-!.env.test
-*.vars
 .idea
 
-# Vite
-vite.config.js.timestamp-*
-vite.config.ts.timestamp-*
+# opennext
+.open-next
+
+# misc
+.DS_Store

@@ -1,11 +1,11 @@
 <script lang="ts">
 	import { Combobox } from 'bits-ui';
 
-	import BaseSystem from '$lib/components/base-system.svelte';
-	import IconAll from '$lib/icons/powerplay/all.svelte';
-	import Acquisition from '$lib/icons/powerplay/acquisition.svelte';
-	import Reinforcement from '$lib/icons/powerplay/reinforcement.svelte';
-	import Undermining from '$lib/icons/powerplay/undermining.svelte';
+	import BaseSystem from 'lib/components/base-system.svelte';
+	import IconAll from 'lib/icons/powerplay/all.svelte';
+	import Acquisition from 'lib/icons/powerplay/acquisition.svelte';
+	import Reinforcement from 'lib/icons/powerplay/reinforcement.svelte';
+	import Undermining from 'lib/icons/powerplay/undermining.svelte';
 
 	// TODO add helper text (e.g. Reformatory are excluded for lack of uplinks while Lowell-class have two)
 	// TODO pagination

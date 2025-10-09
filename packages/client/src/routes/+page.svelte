@@ -41,7 +41,7 @@
 		<span class="text-accent-content font-mono text-2xl">Punya</span>
 		<span class="py-2">Select your power here</span>
 		<span class="py-2">
-			<a href="https://meritminer.cc" class="link link-primary">MeritMiner</a> to find mining rings
+			<a href="https://meritminer.cc" class="link">MeritMiner</a> to find mining rings
 		</span>
 		<span class="py-2">TODO: a proper intro text</span>
 	</div>

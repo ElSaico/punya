@@ -1,42 +1,17 @@
 {
-	"name": "punya",
-	"private": true,
-	"version": "0.0.1",
-	"type": "module",
-	"license": "MPL-2.0",
-	"scripts": {
-		"dev": "vite dev",
-		"build": "vite build",
-		"preview": "npm run build && wrangler pages dev",
-		"check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
-		"check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch",
-		"deploy": "npm run build && wrangler pages deploy",
-		"cf-typegen": "wrangler types && move worker-configuration.d.ts src/",
-		"lint": "eslint . && prettier --check .",
-		"format": "prettier --write ."
-	},
-	"devDependencies": {
-		"@cloudflare/workers-types": "4.20250214.0",
-		"@sveltejs/adapter-cloudflare": "^5.0.3",
-		"@sveltejs/kit": "^2.17.2",
-		"@sveltejs/vite-plugin-svelte": "^5.0.3",
-		"@tailwindcss/vite": "^4.0.6",
-		"bits-ui": "^1.3.0",
-		"daisyui": "5.0.0-beta.9",
-		"eslint": "^9.20.1",
-		"eslint-config-prettier": "^10.0.1",
-		"eslint-plugin-svelte": "^2.46.1",
-		"globals": "^15.15.0",
-		"heroicons-svelte": "2.0.2",
-		"prettier": "^3.5.1",
-		"prettier-plugin-svelte": "^3.3.3",
-		"prettier-plugin-tailwindcss": "^0.6.11",
-		"svelte": "^5.20.1",
-		"svelte-check": "^4.1.4",
-		"tailwindcss": "^4.0.6",
-		"typescript": "^5.7.3",
-		"typescript-eslint": "^8.24.1",
-		"vite": "^6.1.0",
-		"wrangler": "^3.109.1"
-	}
+  "name": "punya",
+  "version": "0.0.0",
+  "workspaces": [
+    "packages/*"
+  ],
+  "scripts": {
+    "dev": "sst dev"
+  },
+  "devDependencies": {
+    "@tsconfig/node22": "^22",
+    "typescript": "^5"
+  },
+  "dependencies": {
+    "sst": "^3"
+  }
 }

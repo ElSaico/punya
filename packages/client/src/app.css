@@ -1,5 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=Sintony');
-@import "tailwindcss";
+@import "../../../node_modules/tailwindcss/dist/lib.d.mts";
 @plugin "daisyui";
 
 @font-face {
