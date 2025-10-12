@@ -19,7 +19,7 @@
 
 <div class="container mx-auto flex h-screen flex-col pt-4">
 	<ul
-		class="menu menu-horizontal bg-base-300 menu-lg flex w-full border-t border-b-2 px-0 py-0.5 font-mono"
+		class="menu menu-horizontal flex w-full menu-lg border-t border-b-2 bg-base-300 px-0 py-0.5 font-mono"
 	>
 		{#each apps as app (app.href)}
 			<li class={{ 'flex-none': app.icon, 'flex-auto': !app.icon }}>
@@ -35,7 +35,7 @@
 			</li>
 		{/each}
 	</ul>
-	<main class="bg-base-200 border-b-2">
+	<main class="border-b-2 bg-base-200">
 		{@render children()}
 	</main>
 </div>
