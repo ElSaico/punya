@@ -1,0 +1,5 @@
+[phases.build]
+cmds = ['...', 'uv run sync-models']
+
+[start]
+cmd = 'uv run collector'

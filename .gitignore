@@ -1,13 +1,16 @@
 # dependencies
 node_modules
 
-# sst
-.sst
+# Python
+.venv
+dist
+*.egg-info
+collector/src/journals
 
 # tmp files
 .#*
 
-# env 
+# env
 .env*.local
 .env
 .idea
