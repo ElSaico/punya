@@ -13,12 +13,16 @@ dependencies = [
     "sqlmodel>=0.0.27",
     "taskiq>=0.11.19",
     "taskiq-fastapi>=0.3.5",
+    "taskiq-redis>=1.1.2",
 ]
 
 [dependency-groups]
 dev = [
     "ruff>=0.14.2",
 ]
+
+[project.scripts]
+eddi-models = 'collector:sync_eddi_models'
 
 [tool.ruff]
 select = ["I", "FURB", "TRY"]
