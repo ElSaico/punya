@@ -1,5 +1,4 @@
 import logging
-import os
 from datetime import datetime
 from enum import Enum
 from typing import Any, List
@@ -7,15 +6,11 @@ from typing import Any, List
 from geoalchemy2 import Geometry
 from sqlmodel import BigInteger, Column, Field, Relationship, SQLModel, create_engine
 
-try:  # TODO use .settings instead
-    from dotenv import load_dotenv
+from .settings import settings
 
-    load_dotenv()
-except ImportError:
-    pass
-
-DEBUG = bool(os.getenv("DEBUG"))
-engine = create_engine(os.getenv("DATABASE_URI"), plugins=["geoalchemy2"], echo=DEBUG)
+engine = create_engine(
+    settings.postgres_url, plugins=["geoalchemy2"], echo=settings.env == "dev"
+)
 logger = logging.getLogger(__name__)
 
 

@@ -1,6 +1,5 @@
 import json
 import logging
-import os
 import re
 import zlib
 from pathlib import Path
@@ -14,16 +13,10 @@ from shapely import Point  # is this overkill? yes. who cares? not me.
 from sqlalchemy.dialects.postgresql import insert
 from sqlmodel import Session, and_, column, or_
 
-from db import Megaship, System, engine
-from journals.fsssignaldiscovered import Message as FSSSignalDiscovered
-from journals.journal import Message as Journal
-
-try:  # TODO use .settings instead
-    from dotenv import load_dotenv
-
-    load_dotenv()
-except ImportError:
-    pass
+from .db import Megaship, System, engine
+from .journals.fsssignaldiscovered import Message as FSSSignalDiscovered
+from .journals.journal import Message as Journal
+from .settings import settings
 
 RE_SHIP_NEW = re.compile(
     r"(?P<codename>[A-Z\-.'+\d\s]+?)\s+(?P<ship_class>[A-Z][a-z]+)-class (?P<category>[A-Z][a-z]+)"
@@ -42,7 +35,6 @@ MEGASHIP_CATEGORY_REMAP = {  # old type -> new type
     "Tourist Ship": "Traveller",
 }
 
-DEBUG = bool(os.getenv("DEBUG"))
 EDDI_URL = "tcp://eddn.edcd.io:9500"
 BATCH_SIZE_MEGASHIPS = 20
 BATCH_SIZE_SYSTEMS = 100
@@ -106,7 +98,7 @@ def create_systems(systems: List[System]):  # TODO taskify
 
 
 def collect():  # TODO taskify and run at start
-    logging.basicConfig(level=logging.DEBUG if DEBUG else logging.INFO)
+    logging.basicConfig(level=logging.DEBUG if settings.env == "dev" else logging.INFO)
     ctx = zmq.Context()
     eddi = ctx.socket(zmq.SUB)
     megaships: List[Megaship] = []

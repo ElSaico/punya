@@ -7,6 +7,7 @@ dependencies = [
     "fastapi[standard]>=0.120.2",
     "geoalchemy2>=0.18.0",
     "psycopg2-binary>=2.9.11",
+    "pydantic-settings>=2.11.0",
     "pyzmq>=27.1.0",
     "shapely>=2.1.2",
     "sqlmodel>=0.0.27",
@@ -16,7 +17,6 @@ dependencies = [
 
 [dependency-groups]
 dev = [
-    "python-dotenv>=1.2.1", # TODO obsoleted by .settings
     "ruff>=0.14.2",
 ]
 
