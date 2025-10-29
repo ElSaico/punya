@@ -5,7 +5,7 @@ node_modules
 .venv
 dist
 *.egg-info
-collector/src/journals
+api/src/journals
 
 # tmp files
 .#*

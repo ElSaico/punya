@@ -1,26 +1,27 @@
 [project]
-name = "punya-collector"
+name = "punya-api"
 version = "0.1.0"
 requires-python = ">=3.13"
 dependencies = [
     "datamodel-code-generator[http]>=0.35.0",
+    "fastapi[standard]>=0.120.2",
     "geoalchemy2>=0.18.0",
     "psycopg2-binary>=2.9.11",
-    "pydantic>=2.12.3",
-    "python-daemon>=3.1.2",
     "pyzmq>=27.1.0",
     "shapely>=2.1.2",
-    "sqlalchemy>=2.0.44",
+    "sqlmodel>=0.0.27",
+    "taskiq>=0.11.19",
+    "taskiq-fastapi>=0.3.5",
 ]
-
-[project.scripts]
-collector = 'main:run'
-sync-models = 'main:sync_models'
 
 [dependency-groups]
 dev = [
-    "python-dotenv>=1.2.1",
+    "python-dotenv>=1.2.1", # TODO obsoleted by .settings
+    "ruff>=0.14.2",
 ]
+
+[tool.ruff]
+select = ["I", "FURB", "TRY"]
 
 [build-system]
 requires = ["setuptools>=61"]
