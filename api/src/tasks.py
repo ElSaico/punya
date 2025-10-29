@@ -2,18 +2,18 @@ import json
 import logging
 import re
 import zlib
-from pathlib import Path
 from typing import Any, List
-from urllib.parse import urlparse
 
 import zmq
-from datamodel_code_generator import DataModelType, InputFileType, generate
 from geoalchemy2.shape import from_shape
 from shapely import Point  # is this overkill? yes. who cares? not me.
 from sqlalchemy.dialects.postgresql import insert
-from sqlmodel import Session, and_, column, or_
+from sqlmodel import and_, column, or_
+from taskiq import TaskiqDepends
 
-from .db import Megaship, System, engine
+from .broker import broker
+from .db import Megaship, System
+from .dependencies import get_session
 from .journals.fsssignaldiscovered import Message as FSSSignalDiscovered
 from .journals.journal import Message as Journal
 from .settings import settings
@@ -56,7 +56,10 @@ def parse_megaship(megaship: str) -> dict[str, Any]:
     return result
 
 
-def create_megaships(megaships: List[Megaship]):  # TODO taskify
+@broker.task
+async def create_megaships(
+    megaships: List[Megaship], session=TaskiqDepends(get_session)
+):
     logger.debug("insert megaships %s", megaships)
     stmt = insert(Megaship).values(megaships)
     stmt = stmt.on_conflict_do_update(  # TODO RETURNING old.name, new.timestamp, new.system_id
@@ -71,11 +74,11 @@ def create_megaships(megaships: List[Megaship]):  # TODO taskify
         },
     )
     # TODO insert MegashipRoute entries where old.name isn't null
-    with Session(engine) as session:
-        session.exec(stmt)
+    session.exec(stmt)
 
 
-def create_systems(systems: List[System]):  # TODO taskify
+@broker.task
+async def create_systems(systems: List[System], session=TaskiqDepends(get_session)):
     logger.debug("insert systems %s", systems)
     stmt = insert(System).values(systems)
     stmt = stmt.on_conflict_do_update(
@@ -93,11 +96,11 @@ def create_systems(systems: List[System]):  # TODO taskify
             "power_state": stmt.excluded.power_state,
         },
     )
-    with Session(engine) as session:
-        session.exec(stmt)
+    session.exec(stmt)
 
 
-def collect():  # TODO taskify and run at start
+@broker.task
+async def collector():
     logging.basicConfig(level=logging.DEBUG if settings.env == "dev" else logging.INFO)
     ctx = zmq.Context()
     eddi = ctx.socket(zmq.SUB)
@@ -129,11 +132,11 @@ def collect():  # TODO taskify and run at start
                     and signal.SignalName != "System Colonisation Ship"
                 ]
                 if len(system_megaships) > 0:
-                    megaships += system_megaships
+                    megaships.extend(system_megaships)
                 # TODO ensure each megaship only appears once
                 if len(megaships) >= BATCH_SIZE_MEGASHIPS:
                     logger.info(f"reached {len(megaships)} megaships, inserting")
-                    create_megaships(megaships)
+                    await create_megaships.kiq(megaships)
                     logger.info("megaships insertion successful")
                     megaships.clear()
             case "FSDJump":
@@ -153,16 +156,6 @@ def collect():  # TODO taskify and run at start
                 # TODO ensure each system only appears once
                 if len(systems) >= BATCH_SIZE_SYSTEMS:
                     logger.info(f"reached {len(systems)} systems, inserting")
-                    create_systems(systems)
+                    await create_systems.kiq(systems)
                     logger.info("systems insertion successful")
                     systems.clear()
-
-
-def sync_eddi_models():  # TODO taskify and run before collect
-    for schema in ["journal", "fsssignaldiscovered"]:
-        generate(
-            urlparse(f"https://eddn.edcd.io/schemas/{schema}/1"),
-            input_file_type=InputFileType.JsonSchema,
-            output=Path("src/journals") / f"{schema}.py",
-            output_model_type=DataModelType.PydanticV2BaseModel,
-        )

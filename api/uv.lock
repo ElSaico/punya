@@ -761,12 +761,6 @@ wheels = [
 ]
 
 [[package]]
-name = "nats-py"
-version = "2.11.0"
-source = { registry = "https://pypi.org/simple" }
-sdist = { url = "https://files.pythonhosted.org/packages/65/be/757c8af63596453daaa42cc21be51aa42fc6b23cc9d4347784f99c8357b5/nats_py-2.11.0.tar.gz", hash = "sha256:fb1097db8b520bb4c8f5ad51340ca54d9fa54dbfc4ecc81c3625ef80994b6100", size = 114186, upload-time = "2025-07-22T08:41:08.589Z" }
-
-[[package]]
 name = "numpy"
 version = "2.3.4"
 source = { registry = "https://pypi.org/simple" }
@@ -955,7 +949,6 @@ dependencies = [
     { name = "sqlmodel" },
     { name = "taskiq" },
     { name = "taskiq-fastapi" },
-    { name = "taskiq-nats" },
     { name = "taskiq-redis" },
 ]
 
@@ -976,7 +969,6 @@ requires-dist = [
     { name = "sqlmodel", specifier = ">=0.0.27" },
     { name = "taskiq", specifier = ">=0.11.19" },
     { name = "taskiq-fastapi", specifier = ">=0.3.5" },
-    { name = "taskiq-nats", specifier = ">=0.5.1" },
     { name = "taskiq-redis", specifier = ">=1.1.2" },
 ]
 
@@ -1468,19 +1460,6 @@ dependencies = [
 sdist = { url = "https://files.pythonhosted.org/packages/cd/29/d4f08a3730d23870f73404d855e5145d13d0bcf1e5376008522804afa51b/taskiq_fastapi-0.3.5.tar.gz", hash = "sha256:0df3df3e7e0a355b9f21a4f81429ad95d0d33af305e75039654ac13ae26c538f", size = 5102, upload-time = "2025-04-20T22:45:21.924Z" }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/b5/06/6ba382f300aebc5d739cd01d708572329d4360ea0c02b7734583a2894b16/taskiq_fastapi-0.3.5-py3-none-any.whl", hash = "sha256:35553cb05cfb8e34d50179bad747d79a42d782f5b9c529128ad64263af8c246f", size = 5116, upload-time = "2025-04-20T22:45:21.049Z" },
-]
-
-[[package]]
-name = "taskiq-nats"
-version = "0.5.1"
-source = { registry = "https://pypi.org/simple" }
-dependencies = [
-    { name = "nats-py" },
-    { name = "taskiq" },
-]
-sdist = { url = "https://files.pythonhosted.org/packages/0f/1c/e46adc5031c92d2ce13ea13e426f664b258fd6e296c8fc6f1bb1009b698a/taskiq_nats-0.5.1.tar.gz", hash = "sha256:fe305fef7c959613bda893a0ffe92e0696194de9df1181c9b6e3a573bf5ac339", size = 7705, upload-time = "2024-11-06T18:44:39.016Z" }
-wheels = [
-    { url = "https://files.pythonhosted.org/packages/c8/a7/7ce378ba7653cd5382d5a8611e4fdb13e9b991d7a2f54bd55c081123290f/taskiq_nats-0.5.1-py3-none-any.whl", hash = "sha256:87edcc082efe98435f59b344439b03436d4ef52eef52a6e34fd3e5bfe113e168", size = 7580, upload-time = "2024-11-06T18:44:37.515Z" },
 ]
 
 [[package]]

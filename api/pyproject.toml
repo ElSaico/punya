@@ -22,7 +22,7 @@ dev = [
 ]
 
 [project.scripts]
-eddi-models = 'collector:sync_eddi_models'
+eddi-models = 'commands:sync_eddi_models'
 
 [tool.ruff]
 select = ["I", "FURB", "TRY"]
