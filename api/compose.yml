@@ -1,0 +1,61 @@
+services:
+  app:
+    &app
+    image: fastapi_app:latest
+    build: .
+    ports:
+      - "8000:8000"
+    restart: always
+    environment:
+      FASTAPI_APP_POSTGRES_URL: postgresql://fastapi_app:fastapi_app@db:5432/fastapi_app
+      FASTAPI_APP_REDIS_URL: redis://valkey/
+    develop:
+      watch:
+        - path: ./src
+          target: /app/src
+          action: sync+restart
+    depends_on:
+      db:
+        condition: service_healthy
+      valkey:
+        condition: service_healthy
+
+  taskiq-worker:
+    <<: *app
+    ports: []
+    command: [ uv, run, taskiq, worker, -fsd, src.broker:broker, -w, "1", --max-fails, "1"]
+
+  taskiq-scheduler:
+    <<: *app
+    ports: []
+    command: [ uv, run, taskiq, scheduler, -fsd, src.broker:scheduler ]
+
+  db:
+    # official arm64 containers are under development, switch when available
+    # https://github.com/postgis/docker-postgis/pull/432
+    image: "imresamu/postgis:18-3.6-alpine"
+    hostname: db
+    ports:
+      - "15432:5432"
+    environment:
+      POSTGRES_DB: "fastapi_app"
+      POSTGRES_USER: "fastapi_app"
+      POSTGRES_PASSWORD: "fastapi_app"
+    restart: always
+    healthcheck:
+      test: pg_isready -U fastapi_app
+      interval: 2s
+      timeout: 3s
+      retries: 40
+
+  valkey:
+    image: bitnami/valkey:latest
+    hostname: valkey
+    restart: always
+    environment:
+      ALLOW_EMPTY_PASSWORD: "yes"
+    healthcheck:
+      test: valkey-cli ping
+      interval: 1s
+      timeout: 3s
+      retries: 50
