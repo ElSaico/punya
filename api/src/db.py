@@ -1,10 +1,22 @@
+import json
 import logging
 from datetime import datetime
 from enum import Enum
-from typing import Any, List
+from typing import List
 
-from geoalchemy2 import Geometry
-from sqlmodel import BigInteger, Column, Field, Relationship, SQLModel, create_engine
+from geoalchemy2 import Geometry, WKBElement
+from geojson_pydantic import Point
+from pydantic import field_validator
+from sqlmodel import (
+    BigInteger,
+    Column,
+    Field,
+    Relationship,
+    Session,
+    SQLModel,
+    create_engine,
+    func,
+)
 
 from .settings import settings
 
@@ -40,11 +52,21 @@ class System(SQLModel, table=True):
     id64: int = Field(sa_column=Column(BigInteger, primary_key=True))
     name: str = Field(index=True)
     timestamp: datetime
-    pos: Any = Field(sa_column=Column(Geometry("POINT")))
+    pos: Point = Field(sa_column=Column(Geometry("POINT")))
     power: Power | None
     power_state: PowerState | None
     megaships: List["Megaship"] = Relationship(back_populates="system")
     megaship_routes: List["MegashipRoute"] = Relationship(back_populates="system")
+
+    @field_validator("pos", mode="before")
+    def deserialize_pos(self, pos):
+        if isinstance(pos, WKBElement):
+            pos = func.ST_AsGeoJSON(pos)
+        elif not isinstance(pos, func.ST_AsGeoJSON):
+            raise TypeError(type(pos))
+
+        with Session(engine) as session:
+            return json.loads(session.scalar(pos))
 
 
 class MegashipRoute(SQLModel, table=True):

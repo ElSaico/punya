@@ -5,8 +5,7 @@ import zlib
 from typing import Any, List
 
 import zmq
-from geoalchemy2.shape import from_shape
-from shapely import Point  # is this overkill? yes. who cares? not me.
+from geojson_pydantic import Point
 from sqlalchemy.dialects.postgresql import insert
 from sqlmodel import and_, column, or_
 from taskiq import TaskiqDepends
@@ -146,7 +145,7 @@ async def collector():
                         id64=fsd.SystemAddress,
                         name=fsd.StarSystem,
                         timestamp=fsd.timestamp,
-                        pos=from_shape(Point(fsd.StarPos)),
+                        pos=Point(type="Point", coordinates=fsd.StarPos),
                         power=fsd.model_extra.get("ControllingPower"),
                         power_state=fsd.model_extra.get("PowerplayState"),
                         megaships=[],
